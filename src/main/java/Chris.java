@@ -29,15 +29,14 @@ public class Chris {
     }
 
     private static String getUserInput() {
-        Scanner scanner = new Scanner(System.in);
-        return scanner.nextLine();
+        return SCANNER.nextLine();
     }
 
     private static void echoUserCommand(String input) {
         String name;
         String date;
         String command = input.split(" ")[0];
-        String remaining = input.substring(input.indexOf(" ")+1);
+        String remaining = input.substring(input.indexOf(command)+command.length());
         System.out.println("--------------------\n");
         switch (command) {
             case "bye":
@@ -45,29 +44,43 @@ public class Chris {
                 isEnd = true;
                 break;
             case "todo":
-                tasks[count] = new Todo(remaining);
+                String todoName = remaining.trim();
+                if (todoName.isEmpty()) {
+                    System.out.println("Please input the task's name.");
+                    break; // Exit the switch case so the task is not created
+                }
+                tasks[count] = new Todo(todoName);
                 System.out.println("Got it. I've added this task:");
                 tasks[count].printStatus();
                 count++;
+                System.out.printf("Now you have %d tasks in the list.\n", count);
                 break;
             case "deadline":
-                date = remaining.substring(remaining.indexOf("/by")+3);
-                name = remaining.substring(0,remaining.indexOf("/by"));
-                tasks[count] = new Deadline(name,date);
-                System.out.println("Got it. I've added this task:");
-                tasks[count].printStatus();
-                count++;
-                System.out.printf("Now you have %d tasks in the list.\n",count);
+                try {
+                    date = remaining.substring(remaining.indexOf("/by") + 3);
+                    name = remaining.substring(0, remaining.indexOf("/by"));
+                    tasks[count] = new Deadline(name,date);
+                    System.out.println("Got it. I've added this task:");
+                    tasks[count].printStatus();
+                    count++;
+                    System.out.printf("Now you have %d tasks in the list.\n",count);
+                } catch (StringIndexOutOfBoundsException e) {
+                    System.out.println("Please enter a valid date in the Format /by day-month-year");
+                }
                 break;
             case "event":
-                name = remaining.substring(0,remaining.indexOf("/from"));
-                String from = remaining.substring(remaining.indexOf("/from")+5,remaining.indexOf("/to"));
-                String to = remaining.substring(remaining.indexOf("/to")+3);
-                tasks[count] = new Event(name, from, to);
-                System.out.println("Got it. I've added this task:");
-                tasks[count].printStatus();
-                count++;
-                System.out.printf("Now you have %d tasks in the list.\n",count);
+                try {
+                    name = remaining.substring(0, remaining.indexOf("/from"));
+                    String from = remaining.substring(remaining.indexOf("/from") + 5, remaining.indexOf("/to"));
+                    String to = remaining.substring(remaining.indexOf("/to") + 3);
+                    tasks[count] = new Event(name, from, to);
+                    System.out.println("Got it. I've added this task:");
+                    tasks[count].printStatus();
+                    count++;
+                    System.out.printf("Now you have %d tasks in the list.\n", count);
+                }catch (StringIndexOutOfBoundsException e) {
+                    System.out.println("Please enter a valid date in the Format /from xxxx /to xxxx");
+                }
                 break;
             case "list":
                 System.out.println("Here are the tasks in your list:\n");
