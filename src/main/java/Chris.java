@@ -101,6 +101,16 @@ public class Chris {
                         tasks[idx-1].undone();
                         tasks[idx-1].printStatus();
                         break;
+            case "delete":
+                        int idx1 = Integer.parseInt(remaining.trim());
+                        System.out.println("Noted. I've deleted this task:\n");
+                        tasks[idx1 - 1].printStatus();
+                        count--;
+                        System.out.printf("You now have %d tasks in the list.\n", count);
+                        for(int i = idx1; i < count; ++i) {
+                            tasks[i - 1] = tasks[i];
+                        }
+                        break;
             default:
                System.out.println("Error: no command is received.");
         }
