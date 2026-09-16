@@ -4,6 +4,9 @@ public class Deadline extends Task{
         super(name);
         this.deadline = deadline;
     }
+    public String getDeadline() {
+        return deadline;
+    }
     @Override
     public void printStatus(){
         String status = isDone ? "[X]" : "[ ]";

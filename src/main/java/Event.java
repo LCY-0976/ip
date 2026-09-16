@@ -6,6 +6,9 @@ public class Event extends Task{
         this.from = from;
         this.to = to;
     }
+    public String getDate(){
+        return this.from + "-" + this.to;
+    }
     @Override
     public void printStatus(){
         String status = isDone ? "[X]" : "[ ]";
