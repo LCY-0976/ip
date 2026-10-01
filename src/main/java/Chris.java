@@ -1,6 +1,10 @@
 import java.io.*;
 import java.util.Scanner;
 
+/**
+ * Represents the main application class for the Chris task manager
+ * Handles user input, command execution, and file persistence
+ */
 public class Chris {
     private static final int CAPACITY = 100;
     private static final Scanner SCANNER = new Scanner(System.in);
@@ -9,6 +13,11 @@ public class Chris {
     private static boolean isEnd;
     private static String HARDCODEDfileName = "./data/duke.txt";
 
+    /**
+     * Main entry point of the application
+     *
+     * @param args command-line arguments
+     */
     public static void main(String[] args) {
         showWelcomeMessage();
         load(HARDCODEDfileName);
@@ -23,6 +32,9 @@ public class Chris {
         }
     }
 
+    /**
+     * Displays the welcome banner and introductory messages
+     */
     private static void showWelcomeMessage() {
         String banner = "  ______  __         _     \n / ____/ / /_  _____(_)____\n/ /   / __ \\/ ___/ / ___/\n/ /___/ / / / /  / (__  ) \n\\____/_/ /_/_/  /_/____/  \n";
         System.out.println(banner);
@@ -31,10 +43,21 @@ public class Chris {
         System.out.println("--------------------\n");
     }
 
+    /**
+     * Reads the next line of input from the user
+     *
+     * @return the user input string
+     */
     private static String getUserInput() {
         return SCANNER.nextLine();
     }
 
+    /**
+     * Saves the current list of tasks to a specified file path
+     *
+     * @param filePath the path of the file to save tasks to
+     * @throws IOException if an I/O error occurs during writing
+     */
     private static void save(String filePath) throws IOException {
         File file = new File(filePath);
         if (file.getParentFile() != null) {
@@ -62,6 +85,11 @@ public class Chris {
         }
     }
 
+    /**
+     * Loads tasks from a specified file path into the application memory
+     *
+     * @param filePath the path of the file to load tasks from
+     */
     private static void load(String filePath) {
         File file = new File(filePath);
         if (!file.exists()) {
@@ -113,6 +141,11 @@ public class Chris {
         }
     }
 
+    /**
+     * Parses and executes the command entered by the user
+     *
+     * @param input the raw input string entered by the user
+     */
     private static void echoUserCommand(String input) {
         String[] splitInput = input.split(" ", 2);
         String command = splitInput[0];
@@ -167,7 +200,8 @@ public class Chris {
                         tasks[index].done();
                         tasks[index].printStatus();
                     }
-                } catch (NumberFormatException ignored) {}
+                } catch (NumberFormatException ignored) {
+                }
                 break;
             case "unmark":
                 try {
@@ -177,8 +211,28 @@ public class Chris {
                         tasks[idx].undone();
                         tasks[idx].printStatus();
                     }
-                } catch (NumberFormatException ignored) {}
+                } catch (NumberFormatException ignored) {
+                }
                 break;
+            case "delete":
+                int idx1 = Integer.parseInt(remaining.trim());
+                System.out.println("Noted. I've deleted this task:\n");
+                tasks[idx1 - 1].printStatus();
+                count--;
+                System.out.printf("You now have %d tasks in the list.\n", count);
+                for (int i = idx1; i < count; ++i) {
+                    tasks[i - 1] = tasks[i];
+                }
+                break;
+            case "find":
+                System.out.println("Here are the matching tasks:\n");
+                for (int i = 0; i < count; ++i) {
+                    if (tasks[i].getName().contains(remaining.trim())) {
+                        tasks[i].printStatus();
+                    }
+                }
+                break;
+
             default:
                 System.out.println("Error: no command is received.");
         }
