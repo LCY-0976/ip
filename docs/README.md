@@ -1,7 +1,7 @@
 # Chris User Guide
 This is a agent that help you manage your work.\
 It can mark down jobs and events that you are going to do.\
-The activities will be saved until you delete them.\
+The activities will be saved until you delete them.
 
 ## Adding todo
 Todo function is just simply used to mark down what you have to finish.\
